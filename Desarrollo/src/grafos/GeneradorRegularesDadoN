@@ -1,0 +1,46 @@
+package grafos;
+
+public class GeneradorRegularesDadoN {
+	
+	private boolean mat[][];
+	private int cantNodos;
+	private int grado;
+	private boolean esPar;
+	
+	public GeneradorRegularesDadoN(int cantNodos, int grado){
+		this.cantNodos = cantNodos;
+		this.grado = grado;
+		for (int i = 0; i<cantNodos;i++) {
+			for(int j = 0; j<cantNodos; j++ )
+				this.mat[i][j] = false;
+			
+		}
+		if(this.grado/2==0)
+			esPar = true;
+	}
+	
+	
+	public Grafo generarGrafo(){
+		if(grado/2!=0 && cantNodos/2!=0){
+			System.out.println("No se puede generar un grafo regular con cantidad de nodos y aristas impar");
+			return null;
+		}
+		if(grado>=cantNodos){
+			System.out.println("El grado debe ser menor a la cantidad de nodos");
+			return null;
+		}
+			if(!esPar){
+				for(int i = 0;i<cantNodos;i++){
+					for(int j = 0; j<cantNodos; j+=(this.grado/2)){
+						mat[i][j] = true;
+					}
+				}
+				
+			}
+		for (int i = 0; i<cantNodos;i++) {
+			for(int j = 0; j<cantNodos; j++)
+				this.mat[i][j] = false;
+			
+		}
+	}
+}
