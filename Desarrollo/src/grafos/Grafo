@@ -1,0 +1,83 @@
+package grafos;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class Grafo {
+	private boolean mat[][]; /// CAMBIAR NOMBRE A MAT POR UNO MAS SIGNIFICATIVO
+	private int cantAristas;
+	private float porcentajeAdy;
+	private int gradMax;
+	private int gradMin;
+	private int cantNodos;
+	
+	public Grafo(boolean mat[][], int cantNodos){
+		this.mat = new boolean[cantNodos][cantNodos];
+		this.mat = mat;
+		this.cantNodos = cantNodos;
+		cantAristas = 0;
+		int gradActual = 0;
+		gradMax = 0;
+		gradMin = 0;
+		
+		for(int i = 0; i<cantNodos-1; i++){
+			for (int j = i+0;j<cantNodos;j++){
+				if(mat[i][j]){
+					gradActual++;
+					this.cantAristas++;
+				}
+					
+			}
+			if (gradActual>gradMax)
+				gradMax = gradActual;
+			if(gradActual<gradMin || gradMin == 0)
+				gradMin = gradActual;
+			gradActual = 0;
+		}
+		this.porcentajeAdy = cantNodos*cantAristas*2;
+	}
+	
+	public void imprimirGrafo() throws IOException{
+		
+		PrintWriter salida = new PrintWriter(new FileWriter("grafo.in"));
+		
+		salida.println(cantNodos + " " + cantAristas + " " + porcentajeAdy + "% " + gradMax + " " + gradMin);
+		for(int i = 0; i<cantNodos; i++){
+			for(int j = i+1; j<cantNodos;j++){
+				System.out.println(mat[i][j]);
+				if(mat[i][j]){					
+					salida.println(i + " " + j);
+				}
+			}
+		}
+		salida.close();
+	}
+
+	public boolean[][] getMat() {
+		return mat;
+	}
+
+	public int getCantAristas() {
+		return cantAristas;
+	}
+
+	public float getPorcentajeAdy() {
+		return porcentajeAdy;
+	}
+
+	public int getGradMax() {
+		return gradMax;
+	}
+
+	public int getGradMin() {
+		return gradMin;
+	}
+
+	public int getCantNodos() {
+		return cantNodos;
+	}
+	
+	
+	
+}
