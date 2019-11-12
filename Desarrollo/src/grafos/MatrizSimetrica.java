@@ -15,26 +15,26 @@ public class MatrizSimetrica {
 		if(fila>=dimensiones || columna>=dimensiones)
 			return false;
 		int filaAux,columnaAux;
-		if(fila>columna) {
+		if(fila<columna) {
 			filaAux = columna;
 			columnaAux = fila;
 		}else {
 			filaAux = fila;
 			columnaAux = columna;
 		}
-		matriz[(((dimensiones+1)*dimensiones)/2)-(((dimensiones-filaAux+1)*(dimensiones-filaAux))/2)+(columnaAux-filaAux)] = num;
+		matriz[(((dimensiones-filaAux+1)*(dimensiones-filaAux))/2)+(columnaAux-filaAux)-1] = num;
 		return true;
 	}
 	
 	public int getNumero(int fila,int columna) {
 		int filaAux,columnaAux;
-		if(fila>columna) {
+		if(fila<columna) {
 			filaAux = columna;
 			columnaAux = fila;
 		}else {
 			filaAux = fila;
 			columnaAux = columna;
 		}
-		return matriz[(((dimensiones+1)*dimensiones)/2)-(((dimensiones-filaAux+1)*(dimensiones-filaAux))/2)+(columnaAux-filaAux)];
+		return matriz[(((dimensiones-filaAux+1)*(dimensiones-filaAux))/2)+(columnaAux-filaAux)-1];
 	}
 }
