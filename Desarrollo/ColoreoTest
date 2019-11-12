@@ -1,0 +1,118 @@
+package programaprobador;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import grafos.Grafo;
+
+public class ColoreoTest {
+	private Grafo grafoEntrada;
+	
+	public void lectorArchivoEntrada(String path) throws IOException{
+		Scanner entrada = new Scanner(new File(path + "grafo.in"));
+		int cantNodos = entrada.nextInt();
+		entrada.nextLine();
+		int nodoOrigen, nodoDestino;
+		boolean matAdy[][] = new boolean[cantNodos][cantNodos]; 
+		for(int i = 0; i<cantNodos;i++)
+			for(int j = 0;j<cantNodos;j++ )
+				matAdy[i][j] = false;
+		while(entrada.hasNext()){
+			nodoOrigen = entrada.nextInt();
+			nodoDestino = entrada.nextInt();
+			matAdy[nodoOrigen][nodoDestino] = true;
+		}
+		this.grafoEntrada = new Grafo(matAdy, cantNodos);
+		entrada.close();
+	}
+	
+	public boolean testColoreo(String path) throws FileNotFoundException{
+		int cantNodos; 
+		int cantColoresDato;
+		int nodoActual;
+		
+		List<Integer> coloresUsados;
+		coloresUsados = new ArrayList<Integer>();
+		
+		int color;
+		int matColores[][];
+		
+		int grMaxDato, grMinDato, cantAristasDato;
+		float adyDato;
+		Scanner entrada = new Scanner(new File(path + "coloreado.out"));
+		
+		cantNodos = entrada.nextInt();
+		if(cantNodos!= grafoEntrada.getCantNodos()){
+			entrada.close();
+			return false;
+		}
+		
+		boolean matAdy[][] = new boolean[cantNodos][cantNodos];
+		matAdy = this.grafoEntrada.getMat();
+		
+		matColores = new int[cantNodos][cantNodos];
+		
+		
+		cantColoresDato = entrada.nextInt();
+		
+		adyDato = entrada.nextFloat();
+		if (adyDato!=grafoEntrada.getPorcentajeAdy()){
+			entrada.close();
+			return false;
+		}
+		
+		cantAristasDato = entrada.nextInt();
+		if(cantAristasDato!=grafoEntrada.getCantAristas()){
+			entrada.close();
+			return false;
+		}
+		
+		grMaxDato = entrada.nextInt();
+		if(grMaxDato!=grafoEntrada.getGradMax()){
+			entrada.close();
+			return false;
+		}
+		
+		grMinDato = entrada.nextInt();
+		if(grMinDato!=grafoEntrada.getGradMin()){
+			entrada.close();
+			return false;
+		}
+		
+		while (entrada.hasNext()){
+			nodoActual = entrada.nextInt();
+			color = entrada.nextInt();
+			if(!coloresUsados.contains(color))
+				coloresUsados.add(color);
+			matColores[nodoActual][nodoActual] = color;
+			for(int i = 0; i<cantNodos;i++){		
+					if(matAdy[i][nodoActual])
+						matColores[i][nodoActual] = color;
+					if(matAdy[nodoActual][i])
+						matColores[i][nodoActual] = color;
+				
+			} /// LE ASIGNO A UNA MATRIZ AUXILIAR LOS COLORES DE CADA NODO
+		}
+		
+		entrada.close();
+
+		if(coloresUsados.size()!=cantColoresDato)  // si tiene una cantidad distinta de colores de las que dice como dato
+			return false;
+		
+		for(int i = 0; i<cantNodos; i++){
+			for (int j = 0;j<cantNodos;j++){
+					if((matColores[i][j] == matColores[i][i] || matColores[j][i] == matColores[i][i]) && j!=i ) //SI SE TRATA DE LA DIAGONAL PRINCIPAL NO COMPARO
+						return false;  /// COMPARA EL COLOR DEL NODO( QUE ESTA ASIGNADO EN LA POSICION [i][i] DE LA MATRIZ) CON TODOS SUS ADYACENTES.
+			}
+		}
+		
+		return true;
+	}
+	
+}
