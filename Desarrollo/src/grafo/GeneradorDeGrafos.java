@@ -60,7 +60,7 @@ public class GeneradorDeGrafos {
 					break;
 			}
 		}
-
+		
 		calcularGradoMinYMax(matriz, cantNodos);
 		GrafoNDNP grafo = new GrafoNDNP(matriz, cantNodos, cantAristas, porcAdy, gradoMax, gradoMin);
 
@@ -75,7 +75,7 @@ public class GeneradorDeGrafos {
 			double porcentajeDeAdyacencia;
 			int saltoMax, j;
 
-			if (grado >= cantNodos) {
+			if (grado >= cantNodos || (cantNodos%2 != 0 && grado%2 !=0 )) {
 				System.out.println("No se puede generar el grafo.");
 				return null;
 			}
@@ -103,7 +103,7 @@ public class GeneradorDeGrafos {
 				}
 			}
 
-			porcentajeDeAdyacencia = (grado * (cantNodos - 1)) * 100;
+			porcentajeDeAdyacencia = 100*grado/(cantNodos-1);
 
 			GrafoNDNP grafo = new GrafoNDNP(matriz, cantNodos, cantidadAristas, porcentajeDeAdyacencia, grado, grado);
 			return grafo;

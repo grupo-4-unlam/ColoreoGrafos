@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.Random;
 
 public class GrafoNDNP {
-	private MatrizSimetrica MatrizDeAdyacencia;
+	private MatrizSimetrica matrizDeAdyacencia;
 	private int cantidadDeNodos;
 	private int cantidadDeAristas;
 	private double porcentajeAdyacencia;
@@ -26,7 +26,7 @@ public class GrafoNDNP {
 		FileReader entrada = null;
 		String linea;
 		String[] data;
-		boolean bandera = false;
+		boolean leyoPrimeraLinea = false;
 		int fila, columna;
 
 		try {
@@ -35,7 +35,7 @@ public class GrafoNDNP {
 
 			while ((linea = bf.readLine()) != null) {
 				data = linea.split(" ");
-				if (!bandera) {
+				if (!leyoPrimeraLinea) {
 					this.cantidadDeNodos = Integer.parseInt(data[0]);
 					this.cantidadDeAristas = Integer.parseInt(data[1]);
 					this.porcentajeAdyacencia = Double.parseDouble(data[2]);
@@ -48,13 +48,13 @@ public class GrafoNDNP {
 						this.nodos[i] = new Nodo(i, 0, 0);
 					}
 
-					this.MatrizDeAdyacencia = new MatrizSimetrica(this.cantidadDeNodos);
-					bandera = true;
+					this.matrizDeAdyacencia = new MatrizSimetrica(this.cantidadDeNodos);
+					leyoPrimeraLinea = true;
 				} else {
 					fila = Integer.parseInt(data[0]);
 					columna = Integer.parseInt(data[1]);
 
-					MatrizDeAdyacencia.setIJ(fila, columna);
+					matrizDeAdyacencia.setIJ(fila, columna);
 					this.nodos[fila].setGrado(this.nodos[fila].getGrado() + 1);
 					this.nodos[columna].setGrado(this.nodos[columna].getGrado() + 1);
 				}
@@ -72,7 +72,7 @@ public class GrafoNDNP {
 	}
 
 	public GrafoNDNP(MatrizSimetrica matriz, int cantNodos, int cantAristas, double PorcAdyacencia, int gMin, int gMax) {
-		this.MatrizDeAdyacencia = matriz;
+		this.matrizDeAdyacencia = matriz;
 		this.cantidadDeNodos = cantNodos;
 		this.cantidadDeAristas = cantAristas;
 		this.porcentajeAdyacencia = PorcAdyacencia;
@@ -81,7 +81,7 @@ public class GrafoNDNP {
 	}
 
 	public MatrizSimetrica getMatrizSimetrica() {
-		return this.MatrizDeAdyacencia;
+		return this.matrizDeAdyacencia;
 	}
 
 	public void grabarEntradaGrafo(String pathIn) {
@@ -95,7 +95,7 @@ public class GrafoNDNP {
 
 			for (int i = 0; i < cantidadDeNodos; i++) {
 				for (int j = i + 1; j < cantidadDeNodos; j++) {
-					if (this.MatrizDeAdyacencia.getIJ(i, j))
+					if (this.matrizDeAdyacencia.getIJ(i, j))
 						entrada.println(i + " " + j);
 				}
 			}
@@ -152,7 +152,7 @@ public class GrafoNDNP {
 	}
 
 	private boolean esAdyacente(Nodo nodoUno, Nodo nodoDos) {
-		return MatrizDeAdyacencia.getIJ(nodoUno.getNumero(), nodoDos.getNumero()) == true;
+		return matrizDeAdyacencia.getIJ(nodoUno.getNumero(), nodoDos.getNumero()) == true;
 	}
 
 	private void ordenarGradoMenorAMayor(Nodo[] nodo, int izq, int der) {
@@ -327,6 +327,42 @@ public class GrafoNDNP {
 	public Nodo[] getVectorNodos() {
 		return this.nodos;
 	}
+
+	
+	///Getters  para imprimir ///
+	public MatrizSimetrica getMatriz() {
+		return matrizDeAdyacencia;
+	}
+
+	public int getCantidadDeNodos() {
+		return cantidadDeNodos;
+	}
+
+	public int getCantidadDeAristas() {
+		return cantidadDeAristas;
+	}
+
+	public double getPorcentajeAdyacencia() {
+		return porcentajeAdyacencia;
+	}
+
+	public int getGradoMaximo() {
+		return gradoMaximo;
+	}
+
+	public int getGradoMinimo() {
+		return gradoMinimo;
+	}
+
+	public Nodo[] getNodos() {
+		return nodos;
+	}
+
+	public int getCantidadDeColores() {
+		return cantidadDeColores;
+	}
+	
+	
 }
 
 
