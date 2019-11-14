@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class GrafoNDNP {
 	private MatrizSimetrica matriz;
@@ -13,7 +15,7 @@ public class GrafoNDNP {
 	private int gradoMaximo;
 	private int gradoMinimo;
 	private Nodo[] nodos;
-	private int cantidadDeColores; 
+	private int cantidadDeColores;
 	
 	public GrafoNDNP(String path) {
 		BufferedReader bf = null;
@@ -78,32 +80,66 @@ public class GrafoNDNP {
 		return this.matriz;
 	}
 
-	public void colorearPowell() {
-		ordenarGradoMayorAMenor(nodos, 0, nodos.length - 1);
-		colorear();
+	
+
+//	public void colorearSecuencialAleatorio() {
+//		colorear();
+//	}	
+	
+//	public void colorearPowell() {
+//		ordenarGradoMayorAMenor(nodos, 0, nodos.length - 1);
+//		colorear();
+//	}
+
+//	public void colorearMatula() {
+//
+//		ordenarGradoMenorAMayor()
+//		colorear();
+//	}
+
+	private void ordenarGradoMayorAMenor() {
+		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+			@Override
+			public int compare(Nodo nodo1, Nodo nodo2) {
+				return nodo2.getGrado() - nodo1.getGrado();
+			}
+		});
 	}
 
-	private void ordenarGradoMayorAMenor(Nodo[] nodos2, int i, int j) {
-		// TODO Auto-generated method stub
-		
+	private void ordenarGradoMenorAMayor() {
+		Arrays.sort(this.nodos, new Comparator<Nodo>() {
+			@Override
+			public int compare(Nodo nodo1, Nodo nodo2) {
+				return nodo1.getGrado() - nodo2.getGrado();
+			}
+			
+		});
 	}
 
-	public void colorearMatula() {
-
-		ordenarGradoMenorAMayor(nodos, 0, nodos.length - 1);
-		colorear();
-	}
-
-	private void ordenarGradoMenorAMayor(Nodo[] nodos2, int i, int j) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void colorearSecuencialAleatorio() {
-		colorear();
-	}
 
 	private void colorear() {
+		int nodo, indice=0, j, color=1;
+		for(int i = 1; i < this.cantidadDeNodos; i++) {
+			nodo = this.nodos[i].getNumero();
+			this.nodos[nodo].setColor(color);
+			j=0;
+			while ( j < this.cantidadDeNodos) {
+				if(nodo != j)
+					if(nodo < j)
+						indice = this.matriz.calcularIndiceEnVector(nodo, j);
+					else
+						indice = this.matriz.calcularIndiceEnVector(j, nodo);
+				if(this.matriz.hayArista(indice) && this.nodos[nodo] == this.nodos[j]) {
+					color++;
+					if(color > cantidadDeColores)
+						cantidadDeColores = color;
+					this.nodos[nodo].setColor(color);
+					j=-1;
+				}
+				j++;
+			}
+			color = 1;
+		}
 	}
 }
 

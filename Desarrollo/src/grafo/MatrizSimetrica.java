@@ -42,11 +42,11 @@ public class MatrizSimetrica {
 		return this.cantNodos;
 	}
 
-	//	public boolean getValorMatrizSimetrica(int pos) {
-	//		return this.matrizEnVector[pos];
-	//	}
-	//
-	//	public void setValorMatrizSimetrica(int pos) {
-	//		this.matrizEnVector[pos] = true;
-	//	}
+	public boolean hayArista(int pos) {
+		return this.matrizEnVector[pos];
+	}
+	
+	public void ponerArista(int pos) {
+		this.matrizEnVector[pos] = true;
+	}
 }
